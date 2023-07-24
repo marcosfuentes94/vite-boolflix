@@ -1,5 +1,5 @@
 {
-  "name": "vite-boolflix",
+  "name": "vue-recap",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.2.3",
+    "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "vite": "^4.4.0"
+    "@vitejs/plugin-vue": "^4.1.0",
+    "sass": "^1.62.1",
+    "vite": "^4.3.2"
   }
 }

@@ -1,30 +1,113 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
+<script>
+
+import Header from "./components/Header.vue"
+import Main from "./components/Main.vue"
+import Footer from "./components/Footer.vue"
+import Loader from "./components/partials/Loader.vue";
+import {store} from './data/store';
+import axios from 'axios';
+
+export default {
+  name:'App',
+  data(){
+    return{
+      store
+    }
+  },
+
+  components:{
+    Header,
+    Main,
+    Footer,
+    Loader
+  },
+
+  methods:{
+
+        // Richiamo API per Popolari
+        getApiPopular(){
+      store.isLoad = true;
+      axios.get(store.apiUrlPopular)
+
+      .then(result => {
+        store.isLoad = false;
+        store.popularArray = result.data.results;
+        console.log(store.popularArray)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
+
+
+    // Richiamo API per Film
+    getApi(){
+      store.isLoad = true;
+      axios.get(store.apiUrl, {
+        params:{
+          query: store.searchTitle,
+          
+        }
+      })
+      .then(result => {
+        store.isLoad = false;
+        store.filmArray = result.data.results;
+        console.log(store.filmArray)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
+
+    // Richiamo API Serie Tv
+    getApiSeries(){
+      store.isLoad = true;
+      axios.get(store.apiUrlTv, {
+        params:{
+          query: store.searchTitle,
+          
+        }
+      })
+      .then(result => {
+        store.isLoad = false;
+        store.seriesArray = result.data.results;
+        console.log(store.seriesArray)
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
+
+},
+
+mounted(){
+  this.getApiPopular()
+
+  }
+
+}
+
+</script>
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+
+  <Header @searchFilm="getApi" @searchSeries="getApiSeries" />
+
+  <Loader v-if="store.isLoad"/>
+
+  <div v-else>
+
+  <Main />
+
+  <Footer />
+
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
+<style lang="scss">
+
+  @use './scss/main.scss' as *;
+
 </style>
